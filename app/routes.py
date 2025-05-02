@@ -1,4 +1,5 @@
 from flask import Blueprint,render_template,url_for,request,redirect
+from datetime import datetime
 from .models import *
 from . import db
 
@@ -18,7 +19,8 @@ def add():
         task = request.form['task']
         note = request.form['note']
         priority=request.form['priority']
-        new_todo = Todo(task=task,note=note,priority=priority,complete=False)
+        time = datetime.now()
+        new_todo = Todo(task=task,note=note,priority=priority,time=time,complete=False)
         db.session.add(new_todo)
         db.session.commit()
     

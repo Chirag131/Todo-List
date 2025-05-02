@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', () => {
-    const sortSelect = document.getElementById('sort-tasks');
+    const sortSelect = document.getElementById('sort-select'); // Updated ID
     const taskList = document.getElementById('incomplete-list');
 
     if (!sortSelect || !taskList) return;
@@ -18,18 +18,28 @@ window.addEventListener('DOMContentLoaded', () => {
         const tasks = Array.from(taskList.querySelectorAll('.task-item'));
 
         tasks.sort((a, b) => {
-            if (sortValue === 'priority') {
-                const p = { 'high': 1, 'medium': 2, 'low': 3 };
-                return p[a.dataset.priority] - p[b.dataset.priority];
-            } else if (sortValue === 'alphabetical') {
-                return a.querySelector('.task-title').textContent.localeCompare(
-                    b.querySelector('.task-title').textContent
-                );
-            }
-            return 0;
-        });
+            tasks.sort((a, b) => {
+                if (sortValue === 'priority') {
+                    const p = { 'high': 1, 'medium': 2, 'low': 3 };
+                    return (p[a.dataset.priority] || 4) - (p[b.dataset.priority] || 4);
+                } else if (sortValue === 'alphabetical') {
+                    const titleA = a.querySelector('.task-title')?.textContent.trim().toLowerCase() || '';
+                    const titleB = b.querySelector('.task-title')?.textContent.trim().toLowerCase() || '';
+                    return titleA.localeCompare(titleB);
+                } else if (sortValue === 'date') {
+                    const dateA = new Date(a.dataset.createdAt);
+                    const dateB = new Date(b.dataset.createdAt);
+                    return dateA - dateB; // Sort by date ascending (oldest first)
+                }
+                return 0; // Default (e.g., no sorting action)
+            });
+            
 
+        // Re-append sorted tasks
         taskList.innerHTML = '';
         tasks.forEach(task => taskList.appendChild(task));
     });
+
 });
+});
+

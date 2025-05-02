@@ -1,60 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo</title>
     <script>
+        // Check if dark mode preference is saved in localStorage
         if (localStorage.getItem('darkMode') === 'enabled') {
-          document.documentElement.classList.add('dark-mode');
+            document.documentElement.classList.add('dark-mode');
         }
-      </script>
-      
+    </script>
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap" rel="stylesheet">
 </head>
+
 <body>
+    <!-- Dark Mode Toggle -->
     <label class="switch">
-        <input type="checkbox" id="toggle-dark">
+        <input type="checkbox" id="toggle-dark" aria-label="Toggle Dark Mode">
         <span class="slider round"></span>
-      </label>
-      
+    </label>
+
     <h1>Todo List</h1>
 
+    <!-- Add New Task Form -->
     <div class="form-card">
         <b>Add a new Item:</b>
-        <form action="{{ url_for('routes.add') }}" method="POST">
-            <input type="text" name="task" placeholder="Enter Task" required>
-            <input type="text" name="note" placeholder="Enter Task Details">
-            <select name="priority">
+        <form action="{{ url_for('routes.add') }}" method="POST" aria-live="polite">
+            <input type="text" name="task" placeholder="Enter Task" required aria-label="Task Name">
+            <input type="text" name="note" placeholder="Enter Task Details" aria-label="Task Details">
+            <select name="priority" aria-label="Select Priority">
                 <option value="low">🟢 Low Priority</option>
                 <option value="medium">🟡 Medium Priority</option>
                 <option value="high">🔴 High Priority</option>
             </select>
-            <input type="submit" value="Add Item" class="button">
+            <input type="submit" value="Add Item" class="button" aria-label="Add Task">
         </form>
     </div>
 
+    <!-- Sorting Controls -->
     <div class="controls">
-        <label>Sort by:
-            <select id="sort-select">
-                <option value="date">Sort by Date</option>
-                <option value="priority">Sort by Priority</option>
-                <option value="alphabetical">Sort Alphabetically</option>
-              </select>
-              
-        </label>
-    </div>
+        <div class="sort-wrapper">
+          <span class="filter-icon">🜜</span> <!-- You can replace this with an SVG icon later -->
+          <select id="sort-select" aria-label="Sort Tasks">
+            <option value="date">Date</option>
+            <option value="priority">Priority</option>
+            <option value="alphabetical">A-Z</option>
+          </select>
+        </div>
+     </div>
+      
+    
 
+    <!-- Task Section -->
     <div class="task-section">
         <h2>Incomplete Tasks</h2>
-        <ul id="incomplete-list">
+        <ul id="incomplete-list" aria-live="polite">
             {% for todo in incomplete %}
             {% if todo.task %}
             <li class="task-item" data-priority="{{ todo.priority }}">
-                <div class="task-header" onclick="toggleNote(this)">
-                    <i class="fa-regular fa-square task-icon complete-icon" data-url="{{ url_for('routes.complete', id=todo.id) }}"></i>
+                <div class="task-header" onclick="toggleNote(this)" role="button" aria-expanded="false">
+                    <i class="fa-regular fa-square task-icon complete-icon" data-url="{{ url_for('routes.complete', id=todo.id) }}" aria-label="Complete Task"></i>
                     <span class="task-title">{{ todo.task }}</span>
                     <span class="priority-label">{{ todo.priority|capitalize }}</span>
                 </div>
@@ -65,12 +74,12 @@
         </ul>
 
         <h2>Complete Tasks</h2>
-        <ul>
+        <ul aria-live="polite">
             {% for todo in complete %}
             {% if todo.task %}
             <li class="task-item completed" data-priority="{{ todo.priority }}">
-                <div class="task-header" onclick="toggleNote(this)">
-                    <i class="fa-solid fa-circle-check"></i>
+                <div class="task-header" onclick="toggleNote(this)" role="button" aria-expanded="false">
+                    <i class="fa-solid fa-circle-check" aria-label="Completed Task"></i>
                     <span class="task-title strike">{{ todo.task }}</span>
                     <span class="priority-label">{{ todo.priority|capitalize }}</span>
                 </div>
@@ -81,10 +90,11 @@
         </ul>
     </div>
 
-<script src="{{ url_for('static', filename='js/darkMode.js') }}"></script>
-<script src="{{ url_for('static', filename='js/sort.js') }}"></script>
-<script src="{{ url_for('static', filename='js/taskDropdown.js') }}"></script>
-<script src="{{ url_for('static', filename='js/completeTask.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/darkMode.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sort.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/taskDropdown.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/completeTask.js') }}"></script>
 
 </body>
+
 </html>

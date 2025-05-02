@@ -1,118 +1,155 @@
-/* Default Styles */
 body {
-    background-color: #f5f5f5;
-    color: #333;
-    font-family: 'Comic Neue', sans-serif;
-    margin: 0;
-    padding: 0;
+    background-color: #fdfdfd;
+    background-image: 
+        linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    color: #222;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-h1 {
+h1, h2 {
     text-align: center;
-    margin-top: 20px;
 }
 
-/* Form Card */
 .form-card {
-    background-color: white;
+    background: white;
     padding: 20px;
-    margin: 20px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: center;
+}
+.form-card b {
+    color: #121212;
 }
 
-input, select, textarea {
-    width: 100%;
+input[type="text"], select {
+    display: block;
+    width: 80%;
+    margin: 10px auto;
     padding: 10px;
-    margin: 10px 0;
-    border-radius: 4px;
-    border: 1px solid #ccc;
+    border-radius: 8px;
 }
 
-input[type="submit"] {
-    background-color: #4CAF50;
+.button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #333;
     color: white;
+    border-radius: 8px;
     cursor: pointer;
-}
-
-input[type="submit"]:hover {
-    background-color: #45a049;
-}
-
-/* Task Section */
-.task-section {
-    padding: 20px;
 }
 
 .task-item {
     list-style: none;
-    background-color: #fff;
-    margin-bottom: 15px;
+    margin: 10px auto;
+    max-width: 600px;
+    background: white;
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    border-radius: 10px;
+    border-left: 10px solid #ddd;
 }
+
+.task-item.high { border-left-color: red; }
+.task-item.medium { border-left-color: orange; }
+.task-item.low { border-left-color: green; }
 
 .task-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.task-title {
+    font-weight: bold;
+    margin-left: 10px;
+    flex-grow: 1;
+}
+
+.task-title.strike {
+    text-decoration: line-through;
+    color: gray;
+}
+
+.task-note {
+    margin-top: 10px;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    overflow: hidden;
+    max-height: 300px;
+}
+.task-note.hidden {
+    max-height: 0;
+    opacity: 0;
 }
 
 .priority-label {
-    font-weight: bold;
+    background-color: #eee;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.complete-icon {
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.sort-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.filter-icon {
+    font-size: 18px;
     color: #666;
 }
 
-.hidden {
-    display: none;
+#sort-select {
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+    transition: all 0.2s ease;
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.05);
 }
 
-.task-item.completed {
-    background-color: #e0e0e0;
+#sort-select:hover {
+    border-color: #888;
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.1);
 }
 
-.strike {
-    text-decoration: line-through;
-    color: #777;
-}
-
-/* Dark Mode Styles */
-html.dark-mode body {
-    background-color: #121212;
-    color: #f0f0f0;
-}
-
-html.dark-mode .form-card {
-    background-color: #333;
-    border: 1px solid #555;
-}
-
-html.dark-mode .task-item {
-    background-color: #222;
-    border: 1px solid #444;
-}
-
-html.dark-mode .task-header {
+.dark-toggle {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #444;
     color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
-html.dark-mode .priority-label {
-    color: #bbb;
-}
-
-html.dark-mode .completed .task-title {
-    color: #aaa;
-}
-
-/* Toggle Switch Styles */
+/* Dark mode toggle switch */
 .switch {
-    position: relative;
+    position: fixed;
+    top: 15px;
+    right: 15px;
     display: inline-block;
-    width: 50px;
-    height: 24px;
+    width: 60px;
+    height: 34px;
+    z-index: 1000;
 }
 
 .switch input {
@@ -130,19 +167,22 @@ html.dark-mode .completed .task-title {
     bottom: 0;
     background-color: #ccc;
     transition: 0.4s;
-    border-radius: 24px;
+    border-radius: 34px;
 }
 
 .slider:before {
     position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    bottom: 3px;
+    content: "🌞";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
     background-color: white;
     transition: 0.4s;
     border-radius: 50%;
+    text-align: center;
+    line-height: 26px;
+    font-size: 14px;
 }
 
 input:checked + .slider {
@@ -151,4 +191,148 @@ input:checked + .slider {
 
 input:checked + .slider:before {
     transform: translateX(26px);
+    content: "🌙";
 }
+
+/* Dark mode styles */
+html.dark-mode {
+    background: #1a1a1a;
+    color: #eaeaea;
+}
+
+html.dark-mode body {
+    background-color: #121212;
+    background-image: 
+        linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    color: #eaeaea;
+}
+
+html.dark-mode h1, 
+html.dark-mode h2, 
+html.dark-mode h3, 
+html.dark-mode h4, 
+html.dark-mode b {
+    color: #f5f5f5;
+}
+
+html.dark-mode input, 
+html.dark-mode textarea, 
+html.dark-mode select {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border: 1px solid #555;
+}
+
+html.dark-mode .form-card,
+html.dark-mode .task-item {
+    background-color: #1f1f1f;
+    color: #f0f0f0;
+    border-left-color: #555;
+}
+
+html.dark-mode .task-title {
+    color: #ffffff;
+}
+
+html.dark-mode .task-title.strike {
+    color: #888888;
+}
+
+html.dark-mode .priority-label {
+    background-color: #2c2c2c;
+    color: #cccccc;
+}
+
+html.dark-mode .button,
+html.dark-mode .dark-toggle {
+    background: #2c2c2c;
+    color: #ffffff;
+}
+
+html.dark-mode #sort-select {
+    background-color: #1e1e1e;
+    color: #f0f0f0;
+    border: 1px solid #555;
+}
+
+html.dark-mode .filter-icon {
+    color: #ccc;
+}
+
+html.dark-mode .complete-icon {
+    color: #ffffff;
+}
+
+html.dark-mode .task-note {
+    color: #dddddd;
+}
+
+html.dark-mode .task-box {
+    background-color: #1a1a1a;
+    border-color: #444;
+}
+
+html.dark-mode .dropdown-content {
+    background-color: #222;
+    border: 1px solid #444;
+}
+
+html.dark-mode .form-container {
+    background-color: #1c1c1c;
+    border: 1px solid #444;
+}
+
+.controls {
+    text-align: center;
+    margin: 20px;
+  }
+  
+  .sort-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+  }
+  
+  .filter-icon {
+    font-size: 16px;
+    color: #666;
+    margin-top: 1px;
+  }
+  
+  #sort-select {
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: #333;
+    padding: 4px 2px;
+    cursor: pointer;
+    appearance: none;
+  }
+  
+  #sort-select:focus {
+    outline: none;
+  }
+  
+  /* Dark Mode Support */
+  html.dark-mode .sort-wrapper {
+    background: #1e1e1e;
+    border: 1px solid #555;
+    box-shadow: 0 1px 4px rgba(255,255,255,0.05);
+  }
+  
+  html.dark-mode .filter-icon {
+    color: #ccc;
+  }
+  
+  html.dark-mode #sort-select {
+    color: #e0e0e0;
+  }
+  
