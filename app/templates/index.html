@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo</title>
+    <script>
+        if (localStorage.getItem('darkMode') === 'enabled') {
+          document.documentElement.classList.add('dark-mode');
+        }
+      </script>
+      
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap" rel="stylesheet">
+</head>
+<body>
+    <label class="switch">
+        <input type="checkbox" id="toggle-dark">
+        <span class="slider round"></span>
+      </label>
+      
+    <h1>Todo List</h1>
+
+    <div class="form-card">
+        <b>Add a new Item:</b>
+        <form action="{{ url_for('routes.add') }}" method="POST">
+            <input type="text" name="task" placeholder="Enter Task" required>
+            <input type="text" name="note" placeholder="Enter Task Details">
+            <select name="priority">
+                <option value="low">🟢 Low Priority</option>
+                <option value="medium">🟡 Medium Priority</option>
+                <option value="high">🔴 High Priority</option>
+            </select>
+            <input type="submit" value="Add Item" class="button">
+        </form>
+    </div>
+
+    <div class="controls">
+        <label>Sort by:
+            <select id="sort-select">
+                <option value="date">Sort by Date</option>
+                <option value="priority">Sort by Priority</option>
+                <option value="alphabetical">Sort Alphabetically</option>
+              </select>
+              
+        </label>
+    </div>
+
+    <div class="task-section">
+        <h2>Incomplete Tasks</h2>
+        <ul id="incomplete-list">
+            {% for todo in incomplete %}
+            {% if todo.task %}
+            <li class="task-item" data-priority="{{ todo.priority }}">
+                <div class="task-header" onclick="toggleNote(this)">
+                    <i class="fa-regular fa-square task-icon complete-icon" data-url="{{ url_for('routes.complete', id=todo.id) }}"></i>
+                    <span class="task-title">{{ todo.task }}</span>
+                    <span class="priority-label">{{ todo.priority|capitalize }}</span>
+                </div>
+                <div class="task-note hidden"><p>{{ todo.note }}</p></div>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+
+        <h2>Complete Tasks</h2>
+        <ul>
+            {% for todo in complete %}
+            {% if todo.task %}
+            <li class="task-item completed" data-priority="{{ todo.priority }}">
+                <div class="task-header" onclick="toggleNote(this)">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span class="task-title strike">{{ todo.task }}</span>
+                    <span class="priority-label">{{ todo.priority|capitalize }}</span>
+                </div>
+                <div class="task-note hidden"><p>{{ todo.note }}</p></div>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+
+<script src="{{ url_for('static', filename='js/darkMode.js') }}"></script>
+<script src="{{ url_for('static', filename='js/sort.js') }}"></script>
+<script src="{{ url_for('static', filename='js/taskDropdown.js') }}"></script>
+<script src="{{ url_for('static', filename='js/completeTask.js') }}"></script>
+
+</body>
+</html>
